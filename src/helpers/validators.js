@@ -14,12 +14,12 @@
  */
 
 // 1. Красная звезда, зеленый квадрат, все остальные белые.
-export const validateFieldN1 = ({star, square, triangle, circle}) => {
-    if (triangle !== 'white' || circle !== 'white') {
-        return false;
-    }
+export const validateFieldN1 = ({ star, square, triangle, circle }) => {
+  if (triangle !== 'white' || circle !== 'white') {
+    return false;
+  }
 
-    return star === 'red' && square === 'green';
+  return star === 'red' && square === 'green';
 };
 
 // 2. Как минимум две фигуры зеленые.

@@ -1,37 +1,36 @@
 .root {
-    max-width: 970px;
-    margin: auto;
-    padding: 40px;
-    padding-top: 40px;
+  max-width: 970px;
+  margin: auto;
+  padding: 40px;
+  padding-top: 40px;
 
-    background-color: white;
-    line-height: 1.4;
+  background-color: white;
+  line-height: 1.4;
 }
 
 .title {
-    color: #212121;
+  color: #212121;
 
-    font-size: 18px;
+  font-size: 18px;
 }
 
-.explanation
-{
-    padding: 0;
+.explanation {
+  padding: 0;
 
-    list-style-type: none;
+  list-style-type: none;
 }
 
 .explanationItem {
-    padding-left: 15px;
+  padding-left: 15px;
 
-    border-left: 3px solid lightsteelblue;
+  border-left: 3px solid lightsteelblue;
 }
 
 .explanationItem:not(:last-child) {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .highlightedText {
-    color: white;
-    background-color: #212121;
+  color: white;
+  background-color: #212121;
 }

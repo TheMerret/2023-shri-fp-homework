@@ -1,57 +1,57 @@
 .root {
-    display: inline-block;
-    width: 400px;
-    background-color: #ececec;
-    vertical-align: top;
-    margin-right: 30px;
-    padding: 15px;
-    border-radius: 4px;
+  display: inline-block;
+  width: 400px;
+  background-color: #ececec;
+  vertical-align: top;
+  margin-right: 30px;
+  padding: 15px;
+  border-radius: 4px;
 }
 
 .shapes {
-    padding: 5px;
-    margin: 10px 0;
-    width: 193px;
-    height: 52px;
+  padding: 5px;
+  margin: 10px 0;
+  width: 193px;
+  height: 52px;
 
-    will-change: border-bottom, background-color;
+  will-change: border-bottom, background-color;
 
-    transition: 200ms;
+  transition: 200ms;
 }
 
 .shapesUntouched {
-    border-bottom: 2px solid #8c8c8c;
+  border-bottom: 2px solid #8c8c8c;
 }
 
 .shapesValid {
-    border-bottom: 2px solid green;
-    background-color: lightgreen;
+  border-bottom: 2px solid green;
+  background-color: lightgreen;
 }
 
 .shapesInvalid {
-    border-bottom: 2px solid red;
-    background-color: lightpink;
+  border-bottom: 2px solid red;
+  background-color: lightpink;
 }
 
 .shape {
-    shape-rendering: crispEdges;
-    transition: fill 300ms;
-    stroke: #212121;
-    strokeWidth: 2;
+  shape-rendering: crispEdges;
+  transition: fill 300ms;
+  stroke: #212121;
+  strokewidth: 2;
 }
 
 .shapeColorWite {
-    fill: white;
+  fill: white;
 }
 .shapeColorRed {
-    fill: red;
+  fill: red;
 }
 .shapeColorOrange {
-    fill: orange;
+  fill: orange;
 }
 .shapeColorGreen {
-    fill: green;
+  fill: green;
 }
 .shapeColorBlue {
-    fill: blue;
+  fill: blue;
 }
