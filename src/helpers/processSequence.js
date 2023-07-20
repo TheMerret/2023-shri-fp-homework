@@ -18,44 +18,36 @@ import Api from '../tools/api';
 
 const api = new Api();
 
-/**
- * Я – пример, удали меня
- */
-const wait = (time) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-
 const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
-  /**
-   * Я – пример, удали меня
-   */
   writeLog(value);
 
-  api
+  const NUMBER_REGEX = /^(?=.)(([0-9]*)(\.([0-9]+))?)$/gm;
+
+  const isNumber = NUMBER_REGEX.test(value);
+  if (!(isNumber && 2 <= value.length && value.length <= 10)) {
+    handleError('ValidationError');
+    return;
+  }
+  const number = Math.round(+value);
+  writeLog(number);
+  const bin = api
     .get('https://api.tech/numbers/base', {
       from: 2,
       to: 10,
-      number: '01011010101',
+      number: `${number}`,
     })
     .then(({ result }) => {
       writeLog(result);
+      return result;
     });
-
-  wait(2500)
-    .then(() => {
-      writeLog('SecondLog');
-
-      return wait(1500);
-    })
-    .then(() => {
-      writeLog('ThirdLog');
-
-      return wait(400);
-    })
-    .then(() => {
-      handleSuccess('Done');
-    });
+  writeLog(bin.length);
+  const squared = number ** 2;
+  writeLog(squared);
+  const remaining = squared % 3;
+  writeLog(remaining);
+  api.get(`https://animals.tech/${remaining}`, {}).then(({ result }) => {
+    handleSuccess(result);
+  });
 };
 
 export default processSequence;
