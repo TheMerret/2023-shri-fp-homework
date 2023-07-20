@@ -23,28 +23,70 @@ export const validateFieldN1 = ({ star, square, triangle, circle }) => {
 };
 
 // 2. Как минимум две фигуры зеленые.
-export const validateFieldN2 = () => false;
+export const validateFieldN2 = ({ star, square, triangle, circle }) => {
+  const figures = [star, square, triangle, circle];
+  return figures.filter((fig) => fig === 'green').length === 2;
+};
 
 // 3. Количество красных фигур равно кол-ву синих.
-export const validateFieldN3 = () => false;
+export const validateFieldN3 = ({ star, square, triangle, circle }) => {
+  const figures = [star, square, triangle, circle];
+  return (
+    figures.filter((fig) => fig === 'red').length ===
+    figures.filter((fig) => fig === 'blue').length
+  );
+};
 
 // 4. Синий круг, красная звезда, оранжевый квадрат треугольник любого цвета
-export const validateFieldN4 = () => false;
+export const validateFieldN4 = ({ star, square, triangle, circle }) => {
+  return (
+    circle === 'blue' &&
+    star === 'red' &&
+    square === 'orange' &&
+    triangle !== 'white'
+  );
+};
 
 // 5. Три фигуры одного любого цвета кроме белого (четыре фигуры одного цвета – это тоже true).
-export const validateFieldN5 = () => false;
+export const validateFieldN5 = ({ star, square, triangle, circle }) => {
+  const figures = [star, square, triangle, circle];
+  return (
+    figures
+      .filter((fig) => fig !== 'white')
+      .filter((fig, ind, arr) => arr.indexOf(fig) === ind).length >= 2
+  );
+};
 
 // 6. Ровно две зеленые фигуры (одна из зелёных – это треугольник), плюс одна красная. Четвёртая оставшаяся любого доступного цвета, но не нарушающая первые два условия
-export const validateFieldN6 = () => false;
+export const validateFieldN6 = ({ star, square, triangle, circle }) => {
+  const figures = [star, square, triangle, circle];
+  const green = figures.filter((fig) => fig === 'green');
+  return (
+    green.length === 3 &&
+    green.includes(triangle) &&
+    figures.filter((fig) => fig === 'red').length === 1 &&
+    figures.filter((fig) => fig !== 'green' && fig !== 'red').length === 1
+  );
+};
 
 // 7. Все фигуры оранжевые.
-export const validateFieldN7 = () => false;
+export const validateFieldN7 = ({ star, square, triangle, circle }) => {
+  const figures = [star, square, triangle, circle];
+  return figures.filter((fig) => fig === 'orange').length === figures.length;
+};
 
 // 8. Не красная и не белая звезда, остальные – любого цвета.
-export const validateFieldN8 = () => false;
+export const validateFieldN8 = ({ star, square, triangle, circle }) => {
+  return star !== 'red' && star !== 'white';
+};
 
 // 9. Все фигуры зеленые.
-export const validateFieldN9 = () => false;
+export const validateFieldN9 = ({ star, square, triangle, circle }) => {
+  const figures = [star, square, triangle, circle];
+  return figures.filter((fig) => fig === 'green').length === figures.length;
+};
 
 // 10. Треугольник и квадрат одного цвета (не белого), остальные – любого цвета
-export const validateFieldN10 = () => false;
+export const validateFieldN10 = ({ star, square, triangle, circle }) => {
+  return triangle !== 'white' && triangle === square;
+};
