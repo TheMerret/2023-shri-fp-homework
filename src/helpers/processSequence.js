@@ -14,40 +14,63 @@
  * Иногда промисы от API будут приходить в состояние rejected, (прямо как и API в реальной жизни)
  * Ответ будет приходить в поле {result}
  */
+import * as R from 'ramda';
+
 import Api from '../tools/api';
 
 const api = new Api();
 
-const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
-  writeLog(value);
-
-  const NUMBER_REGEX = /^(?=.)(([0-9]*)(\.([0-9]+))?)$/gm;
-
-  const isNumber = NUMBER_REGEX.test(value);
-  if (!(isNumber && 2 <= value.length && value.length <= 10)) {
-    handleError('ValidationError');
-    return;
-  }
-  const number = Math.round(+value);
-  writeLog(number);
-  const bin = api
-    .get('https://api.tech/numbers/base', {
-      from: 2,
-      to: 10,
-      number: `${number}`,
-    })
-    .then(({ result }) => {
-      writeLog(result);
-      return result;
-    });
-  writeLog(bin.length);
-  const squared = number ** 2;
-  writeLog(squared);
-  const remaining = squared % 3;
-  writeLog(remaining);
-  api.get(`https://animals.tech/${remaining}`, {}).then(({ result }) => {
-    handleSuccess(result);
+const isNumber = R.test(/^(?=.)(([0-9]*)(\.([0-9]+))?)$/gm);
+const isBetween = (from, to) =>
+  R.compose(R.all(R.identity), R.juxt([R.gte(R.__, from), R.lte(R.__, to)]));
+const isValid = R.allPass([isNumber, isBetween(2, 10)]);
+const apiGet = R.curry(api.get);
+const getBase = apiGet('https://api.tech/numbers/base');
+const getAnimal = (id) => apiGet(`https://animals.tech/${id}`)({});
+const getResult = R.prop('result');
+const convertToBin = (number) =>
+  getBase({
+    from: 10,
+    to: 2,
+    number: `${number}`,
   });
+const getResultAndLog = (writeLog) => R.pipe(getResult, R.tap(writeLog));
+const getResultAndSuccess = (handleSuccess) =>
+  R.pipe(getResult, handleSuccess);
+const square = R.partialRight(Math.pow, [2]);
+
+const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
+  R.pipe(
+    R.tap(writeLog),
+    R.ifElse(
+      isValid,
+      R.pipe(
+        Math.round,
+        R.tap(writeLog),
+        R.pipe(
+          convertToBin,
+          R.andThen(
+            R.pipe(
+              getResultAndLog(writeLog),
+              R.tap((x) => writeLog(x.length)),
+              square,
+              R.tap(console.log),
+              R.tap(writeLog),
+              R.modulo(R.__, 3),
+              R.tap(writeLog),
+              R.pipe(
+                getAnimal,
+                R.otherwise(handleError),
+                R.andThen(getResultAndSuccess(handleSuccess))
+              )
+            )
+          ),
+          R.otherwise(handleError)
+        )
+      ),
+      () => handleError('ValidationError')
+    )
+  )(value);
 };
 
 export default processSequence;
