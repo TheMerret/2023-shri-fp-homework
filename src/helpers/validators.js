@@ -76,15 +76,16 @@ export const validateFieldN6 = R.allPass([
 ]);
 
 // 7. Все фигуры оранжевые.
-export const validateFieldN7 = R.all(isOrange);
+export const validateFieldN7 = R.compose(R.all(isOrange), R.values);
 
 // 8. Не красная и не белая звезда, остальные – любого цвета.
-export const validateFieldN8 = R.not(
+export const validateFieldN8 = R.compose(
+  R.not,
   R.anyPass([R.compose(isRed, getStar), R.compose(isWhite, getStar)])
 );
 
 // 9. Все фигуры зеленые.
-export const validateFieldN9 = R.all(isGreen);
+export const validateFieldN9 = R.compose(R.all(isGreen), R.values);
 
 // 10. Треугольник и квадрат одного цвета (не белого), остальные – любого цвета
 export const validateFieldN10 = R.allPass([

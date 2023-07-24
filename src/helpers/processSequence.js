@@ -22,8 +22,9 @@ const api = new Api();
 
 const isNumber = R.test(/^(?=.)(([0-9]*)(\.([0-9]+))?)$/gm);
 const isBetween = (from, to) =>
-  R.compose(R.all(R.identity), R.juxt([R.gte(R.__, from), R.lte(R.__, to)]));
-const isValid = R.allPass([isNumber, isBetween(2, 10)]);
+  R.compose(R.all(R.identity), R.juxt([R.gt(R.__, from), R.lt(R.__, to)]));
+const isLengthValid = R.compose(isBetween(2, 10), R.length);
+const isValid = R.allPass([isNumber, isLengthValid]);
 
 const apiGet = R.curry(api.get);
 const getBase = apiGet('https://api.tech/numbers/base');
@@ -40,10 +41,8 @@ const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
   const throwValidationError = R.partial(handleError, ['ValidationError']);
 
   const logAndPass = R.tap(writeLog);
-  const logLength = R.pipe(R.length, writeLog);
-  const logLengthAndPass = R.pipe(logLength(writeLog), logAndPass);
+  const logLengthAndPass = R.pipe(R.length, logAndPass);
 
-  const getResultAndLog = R.pipe(getResult, logAndPass);
   const getResultAndSuccess = R.pipe(getResult, handleSuccess);
   const square = R.partialRight(Math.pow, [2]);
 
@@ -53,7 +52,8 @@ const processSequence = ({ value, writeLog, handleSuccess, handleError }) => {
     R.andThen(getResultAndSuccess)
   );
   const processBin = R.pipe(
-    getResultAndLog,
+    getResult,
+    logAndPass,
     logLengthAndPass,
     square,
     R.tap(console.log),
